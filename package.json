@@ -1,7 +1,7 @@
 {
   "name": "learnnode",
   "version": "1.0.0",
-  "description": "",
+  "description": "NODE_OPTIONS=--disable-warning=ExperimentalWarning --disable-warning=DeprecationWarning",
   "type": "module",
   "scripts": {
     "dev": "webpack --mode development",
@@ -32,10 +32,22 @@
     "webpack-dev-server": "^5.2.1"
   },
   "dependencies": {
+    "axios": "^1.9.0",
     "body-parser": "^2.2.0",
+    "cheerio": "^1.0.0",
     "express": "^5.1.0",
     "i": "^0.3.7",
     "leaflet": "^1.9.4",
+    "md5": "^2.3.0",
     "vue-router": "^4.5.0"
-  }
+  },
+  "main": "scrapeButtersafe.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Svyatoslavvyas/Ta23blearnnode.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Svyatoslavvyas/Ta23blearnnode/issues"
+  },
+  "homepage": "https://github.com/Svyatoslavvyas/Ta23blearnnode#readme"
 }

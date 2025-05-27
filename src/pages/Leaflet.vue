@@ -1,13 +1,53 @@
 <script setup>
-import { ref } from 'vue';
-import LeafletMap from '../components/LeafletMap.vue';
+import { ref, onMounted, watch } from 'vue';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
-let coords = ref([59.42691, 24.74344]);
-let zoom = ref(19);
+// Координаты дома (Nurga 6, Maardu)
+const homeCoords = [59.46529, 24.98215];
+const coords = ref([...homeCoords]);
+const zoom = ref(16);
+
+let map = null;
+let homeMarker = null;
+
+function goHome() {
+  coords.value = [...homeCoords];
+  zoom.value = 16;
+  if (map) {
+    map.setView(homeCoords, zoom.value);
+    if (homeMarker) homeMarker.setLatLng(homeCoords);
+  }
+}
+
+onMounted(() => {
+  map = L.map('map').setView(coords.value, zoom.value);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  const homeIcon = L.icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/69/69524.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+  });
+
+  homeMarker = L.marker(homeCoords, { icon: homeIcon }).addTo(map);
+});
+
+watch(zoom, (newZoom) => {
+  if (map) {
+    map.setZoom(newZoom);
+  }
+});
 </script>
+
 <template>
-    <button class="button is-primary" @click="coords=[58.378003935892494, 26.727245723399832]">Go to Tartu</button>
-    <input type="range" min="1" max="19" step="1" v-model="zoom">
-    <LeafletMap :center="coords" :zoom="zoom"></LeafletMap>
-    <LeafletMap :center="[59.4332429007378, 24.75129553356808]" :zoom="10"></LeafletMap>
+  <div style="display: flex; flex-direction: column; gap: 10px; max-width: 400px; margin-bottom: 10px;">
+    <button class="button is-success" @click="goHome">🏠 Kodu</button>
+    <input type="range" min="1" max="19" step="1" v-model="zoom" />
+  </div>
+
+  <div id="map" style="height: 400px;"></div>
 </template>
